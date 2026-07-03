@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bank Management System — Admin Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="glass-strong login-card">
+      <div class="brand-icon">🏦</div>
+      <h1>Bank Management System</h1>
+      <p class="subtitle">Admin Login • Secure Access Portal</p>
+
+      <div id="loginAlert"></div>
+
+      <form id="loginForm" autocomplete="off">
+        <div class="field">
+          <label>Username</label>
+          <input class="input" id="username" type="text" placeholder="Enter admin username" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input class="input" id="password" type="password" placeholder="Enter password" />
+        </div>
+        <button type="submit" class="btn full">🔐 Sign In</button>
+      </form>
+
+      <p class="hint">Demo credentials — username: <b>admin</b> · password: <b>1234</b></p>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>
