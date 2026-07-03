@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bank Management System — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar glass" id="sidebar">
+    <div class="brand">
+      <div class="logo">🏦</div>
+      <div>
+        <div class="title">BankOS</div>
+        <div class="sub">Admin Console</div>
+      </div>
+    </div>
+    <nav class="nav" id="nav">
+      <a data-target="home" class="active"><span class="ico">📊</span> Dashboard</a>
+      <a data-target="create"><span class="ico">➕</span> Create Account</a>
+      <a data-target="view"><span class="ico">📋</span> View All Accounts</a>
+      <a data-target="search"><span class="ico">🔎</span> Search Account</a>
+      <a data-target="deposit"><span class="ico">💰</span> Deposit Money</a>
+      <a data-target="withdraw"><span class="ico">💸</span> Withdraw Money</a>
+      <a data-target="update"><span class="ico">✏️</span> Update Account</a>
+      <a data-target="delete"><span class="ico">🗑️</span> Delete Account</a>
+      <a data-target="tx"><span class="ico">📜</span> Transactions</a>
+      <a data-target="txByAcc"><span class="ico">🧾</span> Tx by Account</a>
+      <a data-target="interest"><span class="ico">🧮</span> Interest Calculator</a>
+      <a id="logoutBtn"><span class="ico">🚪</span> Logout</a>
+    </nav>
+    <div class="foot">© 2026 BankOS · Diploma CSE Project</div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main glass">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="btn ghost small hamburger" id="hamburger">☰</button>
+        <h2 id="pageTitle">Dashboard</h2>
+      </div>
+      <div class="actions">
+        <span class="pill">👤 Admin</span>
+        <button class="btn ghost small" id="seedBtn">✨ Load Demo Data</button>
+      </div>
+    </div>
+
+    <!-- HOME -->
+    <section class="section active" id="home">
+      <div class="panel glass" style="background:linear-gradient(135deg,rgba(30,64,175,0.35),rgba(34,211,238,0.15));">
+        <h3>Welcome back, Admin 👋</h3>
+        <div class="desc">Here is a live overview of your bank. All data is stored locally in your browser.</div>
+      </div>
+
+      <div class="cards" id="summaryCards"></div>
+
+      <div class="grid-2">
+        <div class="panel glass">
+          <h3>⚡ Quick Actions</h3>
+          <div class="quick">
+            <button data-go="create"><span class="q-ico">➕</span><div class="q-t">Create Account</div><div class="q-d">Open a new customer account</div></button>
+            <button data-go="deposit"><span class="q-ico">💰</span><div class="q-t">Deposit</div><div class="q-d">Add money to an account</div></button>
+            <button data-go="withdraw"><span class="q-ico">💸</span><div class="q-t">Withdraw</div><div class="q-d">Withdraw with min-balance rule</div></button>
+            <button data-go="tx"><span class="q-ico">📜</span><div class="q-t">Transactions</div><div class="q-d">View full history</div></button>
+          </div>
+        </div>
+        <div class="panel glass">
+          <h3>🕒 Recent Transactions</h3>
+          <div id="recentTx"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREATE -->
+    <section class="section" id="create">
+      <div class="panel glass">
+        <h3>Create New Account</h3>
+        <div class="desc">Fill in the details to open a new customer account.</div>
+        <form id="createForm">
+          <div class="grid-2">
+            <div class="field"><label>Account Number *</label><input class="input" id="c_acc" placeholder="e.g. 101" /></div>
+            <div class="field"><label>Full Name *</label><input class="input" id="c_name" placeholder="e.g. Rahul Patel" /></div>
+            <div class="field"><label>Age *</label><input class="input" id="c_age" type="number" placeholder="e.g. 20" /></div>
+            <div class="field"><label>Mobile Number *</label><input class="input" id="c_mobile" placeholder="10-digit number" /></div>
+            <div class="field" style="grid-column:1/-1;"><label>Address *</label><input class="input" id="c_addr" placeholder="City, State" /></div>
+            <div class="field"><label>Account Type *</label>
+              <select id="c_type"><option value="Savings">Savings</option><option value="Current">Current</option></select>
+            </div>
+            <div class="field"><label>Initial Balance (₹) *</label><input class="input" id="c_bal" type="number" placeholder="Minimum ₹500" /></div>
+          </div>
+          <div class="row-actions" style="margin-top:6px;">
+            <button type="submit" class="btn">🏦 Create Account</button>
+            <button type="reset" class="btn ghost">Reset</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- VIEW ALL -->
+    <section class="section" id="view">
+      <div class="panel glass">
+        <h3>All Accounts</h3>
+        <div class="search-row">
+          <input class="input" id="v_search" placeholder="Search by name or account number…" />
+          <select id="v_filter">
+            <option value="">All Types</option>
+            <option value="Savings">Savings</option>
+            <option value="Current">Current</option>
+          </select>
+        </div>
+        <div class="table-wrap" id="viewTable"></div>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="section" id="search">
+      <div class="panel glass">
+        <h3>Search Account</h3>
+        <div class="search-row">
+          <input class="input" id="s_acc" placeholder="Enter account number" />
+          <button class="btn" id="s_btn">🔎 Search</button>
+        </div>
+        <div id="s_result"></div>
+      </div>
+    </section>
+
+    <!-- DEPOSIT -->
+    <section class="section" id="deposit">
+      <div class="panel glass">
+        <h3>Deposit Money</h3>
+        <div class="grid-2">
+          <div class="field"><label>Account Number</label><input class="input" id="d_acc" /></div>
+          <div class="field"><label>Amount (₹)</label><input class="input" id="d_amt" type="number" /></div>
+        </div>
+        <button class="btn" id="d_btn">💰 Deposit</button>
+        <div id="d_result"></div>
+      </div>
+    </section>
+
+    <!-- WITHDRAW -->
+    <section class="section" id="withdraw">
+      <div class="panel glass">
+        <h3>Withdraw Money</h3>
+        <div class="desc">Rule: balance must not fall below ₹500 after withdrawal.</div>
+        <div class="grid-2">
+          <div class="field"><label>Account Number</label><input class="input" id="w_acc" /></div>
+          <div class="field"><label>Amount (₹)</label><input class="input" id="w_amt" type="number" /></div>
+        </div>
+        <button class="btn" id="w_btn">💸 Withdraw</button>
+        <div id="w_result"></div>
+      </div>
+    </section>
+
+    <!-- UPDATE -->
+    <section class="section" id="update">
+      <div class="panel glass">
+        <h3>Update Account</h3>
+        <div class="search-row">
+          <input class="input" id="u_acc" placeholder="Enter account number to load" />
+          <button class="btn" id="u_load">📂 Load</button>
+        </div>
+        <div id="u_form"></div>
+      </div>
+    </section>
+
+    <!-- DELETE -->
+    <section class="section" id="delete">
+      <div class="panel glass">
+        <h3>Delete Account</h3>
+        <div class="search-row">
+          <input class="input" id="del_acc" placeholder="Enter account number" />
+          <button class="btn danger" id="del_btn">🗑️ Delete</button>
+        </div>
+        <div id="del_result"></div>
+      </div>
+    </section>
+
+    <!-- TRANSACTIONS -->
+    <section class="section" id="tx">
+      <div class="panel glass">
+        <h3>Transaction History</h3>
+        <div class="table-wrap" id="txTable"></div>
+      </div>
+    </section>
+
+    <!-- TX BY ACCOUNT -->
+    <section class="section" id="txByAcc">
+      <div class="panel glass">
+        <h3>Transactions by Account</h3>
+        <div class="search-row">
+          <input class="input" id="tba_acc" placeholder="Enter account number" />
+          <button class="btn" id="tba_btn">🔎 Filter</button>
+        </div>
+        <div class="table-wrap" id="tba_table"></div>
+      </div>
+    </section>
+
+    <!-- INTEREST -->
+    <section class="section" id="interest">
+      <div class="panel glass">
+        <h3>Simple Interest Calculator</h3>
+        <div class="desc">Formula: SI = (Principal × Rate × Time) / 100</div>
+        <div class="grid-3">
+          <div class="field"><label>Principal (₹)</label><input class="input" id="i_p" type="number" /></div>
+          <div class="field"><label>Rate (%)</label><input class="input" id="i_r" type="number" step="0.01" /></div>
+          <div class="field"><label>Time (Years)</label><input class="input" id="i_t" type="number" step="0.1" /></div>
+        </div>
+        <button class="btn" id="i_btn">🧮 Calculate</button>
+        <div id="i_result"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-back" id="modal">
+  <div class="modal glass-strong">
+    <h4 id="modalTitle">Confirm</h4>
+    <p id="modalBody">Are you sure?</p>
+    <div class="row-actions">
+      <button class="btn ghost" id="modalCancel">Cancel</button>
+      <button class="btn danger" id="modalOk">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
