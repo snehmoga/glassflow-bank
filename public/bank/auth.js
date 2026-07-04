@@ -3,7 +3,7 @@
 // ============================================================
 
 const ADMIN_USER = "admin";
-const ADMIN_PASS = "1234";
+const ADMIN_PASS = "snehmoga";
 
 // If already logged in, jump straight to dashboard
 if (localStorage.getItem("bankAdminLoggedIn") === "true") {
